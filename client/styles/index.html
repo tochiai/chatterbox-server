@@ -1,0 +1,32 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>chatterbox</title>
+    <link rel="stylesheet" href="styles/styles.css">
+
+    <!-- dependencies -->
+    <script src="bower_components/underscore/underscore.js"></script>
+    <script src="bower_components/jquery/jquery.min.js"></script>
+    <!-- your scripts -->
+    <script src="scripts/config.js"></script>
+    <script src="scripts/app.js"></script>
+  </head>
+  <body>
+    <div id="main">
+      <h1>chatter<i>box</i></h1>
+      <!-- Your HTML goes here! -->
+      <form>
+        <input type="text" name="Add a message:" placeholder="new message here" id="chatText" autofocus>
+        <input type="button" value="Submit" id="submit">
+        <input type="text" name="Room:" placeholder="new room here" id="newJoinRoom">
+        <input type="button" value="Join/Create Room" id="submitRoom">
+        <span>Select a room:</span>
+        <select id="roomSelect"></select>
+      </form>
+      <!--messageContainer-->
+      <ul id="chats">
+      </ul>
+    </div>
+  </body>
+</html>

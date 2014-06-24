@@ -1,4 +1,4 @@
-var handler = require('../request-handler');
+var handler = require('../request-handler.js');
 var expect = require('../../node_modules/chai/chai').expect;
 var basicServer = require('../basic-server').server;
 var stubs = require('./Stubs');
@@ -27,9 +27,9 @@ describe('Node Server Request Listener Function', function() {
   it('Should send back parsable stringified JSON', function() {
     var req = new stubs.request('/classes/room1', 'GET');
     var res = new stubs.response();
+    debugger;
 
     handler(req, res);
-
     expect(JSON.parse.bind(this, res._data)).to.not.throw();
     expect(res._ended).to.equal(true);
   });

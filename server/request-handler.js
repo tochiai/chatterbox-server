@@ -25,12 +25,17 @@ var handleRequest = function(request, response) {
   headers['Content-Type'] = "text/plain";
 
   if(request.method === 'GET') {
-
-    statusCode = 200;
-    response.writeHead(statusCode, headers);
-    response.write(JSON.stringify(data));
-      console.log(data);
-
+    if(request.url === "/classes/messages"){
+      statusCode = 200;
+      response.writeHead(statusCode, headers);
+      response.write(JSON.stringify(data));
+    } else if(request.url === "/classes/room1"){
+      statusCode = 200;
+      response.writeHead(statusCode, headers);
+      response.end(JSON.stringify({}));
+    } else {
+      response.statusCode = 404;
+    }
   } else if(request.method === 'POST') {
 
     statusCode = 201;

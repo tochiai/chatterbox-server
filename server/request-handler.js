@@ -4,8 +4,11 @@
  * You'll have to figure out a way to export this function from
  * this file and include it in basic-server.js so that it actually works.
  * *Hint* Check out the node module documentation at http://nodejs.org/api/modules.html. */
-var data = {};
-data.results = [];
+var allMessages = {};
+allMessages.results = [];
+
+var room1Messages = {};
+room1Messages.results = [];
 
 var handleRequest = function(request, response) {
   /* the 'request' argument comes from nodes http module. It includes info about the
@@ -28,25 +31,37 @@ var handleRequest = function(request, response) {
     if(request.url === "/classes/messages"){
       statusCode = 200;
       response.writeHead(statusCode, headers);
-      response.write(JSON.stringify(data));
+      response.end(JSON.stringify(allMessages));
     } else if(request.url === "/classes/room1"){
       statusCode = 200;
       response.writeHead(statusCode, headers);
-      response.end(JSON.stringify({}));
+      response.end(JSON.stringify(room1Messages));
     } else {
       response.statusCode = 404;
+      response.end();
     }
   } else if(request.method === 'POST') {
-
-    statusCode = 201;
-    request.on('data', function (data) {
-      dataBuffer += data;
-    });
-    request.on('end', function () {
-      data.results.push(JSON.parse(dataBuffer));
-    });
-    response.writeHead(statusCode, headers);
-
+    if (request.url === "/classes/messages") {
+      statusCode = 201;
+      request.on('data', function (data) {
+        dataBuffer += data;
+      });
+      request.on('end', function () {
+        allMessages.results.push(JSON.parse(dataBuffer));
+      });
+      response.writeHead(statusCode, headers);
+      response.end();
+    } else if (request.url === "/classes/room1") {
+      statusCode = 201;
+      request.on('data', function (data) {
+        dataBuffer += data;
+      });
+      request.on('end', function () {
+        room1Messages.results.push(JSON.parse(dataBuffer));
+      });
+      response.writeHead(statusCode, headers);
+      response.end();
+    }
   }
 
   /* .writeHead() tells our server what HTTP status code to send back */
@@ -57,7 +72,6 @@ var handleRequest = function(request, response) {
    * up in the browser.*/
 
 
-  response.end();
 };
 
 /* These headers will allow Cross-Origin Resource Sharing (CORS).

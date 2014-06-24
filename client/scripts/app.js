@@ -14,7 +14,7 @@ var xssAttack = function(str) {
 };
 
 var app = {
-  server: 'https://api.parse.com/1/classes/chatterbox',
+  server: 'http://127.0.0.1:3000/',
   currentRoom: '',
   rooms: [],
   friends: [],
@@ -48,7 +48,6 @@ var app = {
     $.ajax({
       url: this.server,
       type: 'GET',
-      data: '&order=-createdAt',
       contentType: 'application/json',
       success: function (data) {
         console.log('chatterbox: Messages received');

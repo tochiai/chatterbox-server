@@ -32,10 +32,10 @@ var app = {
   },
   send: function(message) {
     $.ajax({
-      url: this.server,
+      url: this.server + 'classes/messages',
       type: 'POST',
       data: JSON.stringify(message),
-      contentType: 'application/json',
+      contentType: 'text/plain',
       success: function (data) {
         console.log('chatterbox: Message sent');
       },
@@ -46,12 +46,12 @@ var app = {
   },
   fetch: function() {
     $.ajax({
-      url: this.server,
+      url: this.server + 'classes/messages',
       type: 'GET',
-      contentType: 'application/json',
+      contentType: 'text/plain',
       success: function (data) {
         console.log('chatterbox: Messages received');
-        var results = data.results;
+        var results = JSON.parse(data).results;
         app.clearMessages();
         app.rooms = _.filter(_.uniq(_.pluck(results, 'roomname')), function(room){
           if (room !== undefined){

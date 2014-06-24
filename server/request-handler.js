@@ -62,6 +62,10 @@ var handleRequest = function(request, response) {
       response.writeHead(statusCode, headers);
       response.end();
     }
+  } else if (request.method === 'OPTIONS') {
+    statusCode = 200;
+    response.writeHead(statusCode, headers);
+    response.end();
   }
 
   /* .writeHead() tells our server what HTTP status code to send back */
@@ -82,7 +86,7 @@ var handleRequest = function(request, response) {
 var defaultCorsHeaders = {
   "access-control-allow-origin": "*",
   "access-control-allow-methods": "GET, POST, PUT, DELETE, OPTIONS",
-  "access-control-allow-headers": "content-type, accept",
+  "access-control-allow-headers": "content-type, accept, X-HTTP-Method-Override",
   "access-control-max-age": 10 // Seconds.
 };
 

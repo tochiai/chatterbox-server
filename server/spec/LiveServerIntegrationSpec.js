@@ -28,6 +28,7 @@ describe('Live Node Chat Server', function() {
   it('Should send an object containing a `results` array', function(done) {
     request('http://127.0.0.1:3000/classes/messages', function(error, response, body) {
       parsedBody = JSON.parse(body);
+      debugger;
       expect(parsedBody).to.be.an('object');
       expect(parsedBody.results).to.be.an('array');
       done();

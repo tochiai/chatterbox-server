@@ -14,7 +14,7 @@ var xssAttack = function(str) {
 };
 
 var app = {
-  server: 'http://127.0.0.1:3000/',
+  server: 'http://chattering.azurewebsites.net/',
   currentRoom: '',
   rooms: [],
   friends: [],

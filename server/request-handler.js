@@ -4,6 +4,8 @@
  * You'll have to figure out a way to export this function from
  * this file and include it in basic-server.js so that it actually works.
  * *Hint* Check out the node module documentation at http://nodejs.org/api/modules.html. */
+var data = {};
+data.results = [];
 
 var handleRequest = function(request, response) {
   /* the 'request' argument comes from nodes http module. It includes info about the
@@ -15,44 +17,42 @@ var handleRequest = function(request, response) {
   console.log("Serving request type " + request.method + " for url " + request.url);
 
   var statusCode;
-  var data = {};
-  data.results = [];
-  var dataBuffer ='';
-  console.log(request.method);
-  if(request.method === 'GET') {
-    if (request.url === '/classes/messages') {
-      statusCode = 200;
-      response.write(JSON.stringify(data));
-    } else if (request.url === '/classes/room') {
-      statusCode = 200;
-    }
-  } else if(request.method === 'POST' && request.url === '/classes/messages') {
-    statusCode = 201;
-    request.on('data', function(data){
-      dataBuffer+= data;
-    });
-    request.on('end', function(){
-      data.results.push(dataBuffer);
-    });
 
-  }
-
+  var dataBuffer = '';
   /* Without this line, this server wouldn't work. See the note
    * below about CORS. */
   var headers = defaultCorsHeaders;
-
   headers['Content-Type'] = "text/plain";
 
+  if(request.method === 'GET') {
+
+    statusCode = 200;
+    response.writeHead(statusCode, headers);
+    response.write(JSON.stringify(data));
+      console.log(data);
+
+  } else if(request.method === 'POST') {
+
+    statusCode = 201;
+    request.on('data', function (data) {
+      dataBuffer += data;
+    });
+    request.on('end', function () {
+      data.results.push(JSON.parse(dataBuffer));
+    });
+    response.writeHead(statusCode, headers);
+
+  }
+
   /* .writeHead() tells our server what HTTP status code to send back */
-  response.writeHead(statusCode, headers);
 
   /* Make sure to always call response.end() - Node will not send
    * anything back to the client until you do. The string you pass to
    * response.end() will be the body of the response - i.e. what shows
    * up in the browser.*/
 
-  response.end();
 
+  response.end();
 };
 
 /* These headers will allow Cross-Origin Resource Sharing (CORS).

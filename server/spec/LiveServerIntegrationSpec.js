@@ -28,7 +28,6 @@ describe('Live Node Chat Server', function() {
   it('Should send an object containing a `results` array', function(done) {
     request('http://127.0.0.1:3000/classes/messages', function(error, response, body) {
       parsedBody = JSON.parse(body);
-      debugger;
       expect(parsedBody).to.be.an('object');
       expect(parsedBody.results).to.be.an('array');
       done();
@@ -56,7 +55,7 @@ describe('Live Node Chat Server', function() {
         username: 'Jono',
         message: 'Do my bidding!'}
     };
-
+    debugger;
     request(requestParams, function(error, response, body) {
       // Now if we request the log, that message we posted should be there:
       request('http://127.0.0.1:3000/classes/messages', function(error, response, body) {

@@ -4,6 +4,9 @@
  * You'll have to figure out a way to export this function from
  * this file and include it in basic-server.js so that it actually works.
  * *Hint* Check out the node module documentation at http://nodejs.org/api/modules.html. */
+var fs = require('fs');
+
+
 var allMessages = {};
 allMessages.results = [];
 
@@ -36,6 +39,11 @@ var handleRequest = function(request, response) {
       statusCode = 200;
       response.writeHead(statusCode, headers);
       response.end(JSON.stringify(room1Messages));
+    } else if (request.url === "/") {
+      statusCode = 200;
+      headers['Content-Type'] = "text/html";
+      response.writeHead(statusCode, headers);
+      fs.readFile('./client/index.html').pipe(response);
     } else {
       response.statusCode = 404;
       response.end();

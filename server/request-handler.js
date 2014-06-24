@@ -14,7 +14,28 @@ var handleRequest = function(request, response) {
 
   console.log("Serving request type " + request.method + " for url " + request.url);
 
-  var statusCode = 200;
+  var statusCode;
+  var data = {};
+  data.results = [];
+  var dataBuffer ='';
+  console.log(request.method);
+  if(request.method === 'GET') {
+    if (request.url === '/classes/messages') {
+      statusCode = 200;
+      response.write(JSON.stringify(data));
+    } else if (request.url === '/classes/room') {
+      statusCode = 200;
+    }
+  } else if(request.method === 'POST' && request.url === '/classes/messages') {
+    statusCode = 201;
+    request.on('data', function(data){
+      dataBuffer+= data;
+    });
+    request.on('end', function(){
+      data.results.push(dataBuffer);
+    });
+
+  }
 
   /* Without this line, this server wouldn't work. See the note
    * below about CORS. */
@@ -29,7 +50,9 @@ var handleRequest = function(request, response) {
    * anything back to the client until you do. The string you pass to
    * response.end() will be the body of the response - i.e. what shows
    * up in the browser.*/
-  response.end("Hello, World!");
+
+  response.end();
+
 };
 
 /* These headers will allow Cross-Origin Resource Sharing (CORS).
@@ -43,3 +66,6 @@ var defaultCorsHeaders = {
   "access-control-allow-headers": "content-type, accept",
   "access-control-max-age": 10 // Seconds.
 };
+
+module.exports = handleRequest;
+

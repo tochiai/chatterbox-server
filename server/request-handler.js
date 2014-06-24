@@ -43,7 +43,7 @@ var handleRequest = function(request, response) {
       statusCode = 200;
       headers['Content-Type'] = "text/html";
       response.writeHead(statusCode, headers);
-      fs.readFile('./client/index.html').pipe(response);
+      fs.createReadStream('./client/index.html').pipe(response);
     } else {
       response.statusCode = 404;
       response.end();

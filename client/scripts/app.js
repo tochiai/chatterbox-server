@@ -125,7 +125,7 @@ var app = {
   handleSubmit: function(text){
     //XSS DEFENSE NEEDED
     var submission = {};
-    submission.username = window.location.search.slice(10);
+    submission.username = prompt('User name?');
     submission.text = text;
     submission.roomname = app.currentRoom;
     app.send(submission);

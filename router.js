@@ -23,7 +23,7 @@ var headers = {
 var url = require('url');
 var fs = require('fs');
 
-var handleRequest = function (request, response) {
+module.exports = handleRequest = function (request, response) {
 
   var path = request.url;
 
@@ -33,12 +33,18 @@ var handleRequest = function (request, response) {
   };
 
   var handleStaticFileRequest = function(staticFilePath) {
-    var staticFileStream = fs.createReadStream('.' + staticFilePath);
-    staticFileStream.on('data', function () {
-      staticFileStream.pipe(response);
+    console.log(staticFilePath);
+    var staticFileStream = fs.createReadStream('./client' + staticFilePath);
+    staticFileStream.on('data', function (data) {
+      response.write(data);
+    });
+
+    staticFileStream.on('end', function () {
+      response.end();
     });
 
     staticFileStream.on('error', function () {
+      console.log('uh oh');
       response.statusCode = 404;
       response.end();
     });
@@ -55,10 +61,10 @@ var handleRequest = function (request, response) {
   };
 
   if(request.method === 'GET'){
-    if (/\S*.\S*/.test(request.url)) {
+    if (/\S*\.\S*/.test(request.url)) {
       handleStaticFileRequest(request.url);
     } else if (request.url === '/classes/messages') {
-      handleGetMessages((JSON.stringify(messages));
+      handleGetMessages(JSON.stringify(messages));
     } else if(request.url === '/'){
       handleStaticFileRequest('/index.html');
     } else {

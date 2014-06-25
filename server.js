@@ -1,6 +1,6 @@
 /* Import node's http module: */
 var http = require("http");
-var handleRequest = require('./server/request-handler.js')
+var handleRequest = require('./router.js')
 
 
 /* Every server needs to listen on a port with a unique number. The

@@ -25,15 +25,9 @@ var fs = require('fs');
 
 var handleRequest = function (request, response) {
 
-  var methods = {
-    'GET': handleGet,
-    'POST': handlePost,
-    'OPTIONS': handleOptions
-  };
-
   var path = request.url;
 
-  var handleGet = function (data) {
+  var handleGetMessages = function (data) {
     response.writeHead(200, headers);
     response.end(data);
   };
@@ -50,11 +44,39 @@ var handleRequest = function (request, response) {
     });
   };
 
-  if (/\S*.\S*/.test(request.url)) {
-    handleStaticFileRequest(request.url);
-  } else if (request.url === '/classes/messages') {
-    methods[request.method](JSON.stringify(messages));
+  var persistData = function() {
+    var dataBuffer = '';
+    request.on('data', function(data) {
+      dataBuffer += data;
+    });
+    request.on('end', function() {
+      messages.results.push(JSON.parse(dataBuffer));
+    });
+  };
+
+  if(request.method === 'GET'){
+    if (/\S*.\S*/.test(request.url)) {
+      handleStaticFileRequest(request.url);
+    } else if (request.url === '/classes/messages') {
+      handleGetMessages((JSON.stringify(messages));
+    } else if(request.url === '/'){
+      handleStaticFileRequest('./index.html');
+    } else {
+      response.statusCode = 404;
+      response.end();
+    }
+  } else if(request.method === 'POST') {
+    if (request.url === '/classes/messages'){
+      persistData();
+      response.writeHead(201, headers);
+      response.end();
+    } else {
+      response.statusCode(404);
+      response.end();
+    }
   }
+
+
 
 
 

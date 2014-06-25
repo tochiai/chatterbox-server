@@ -60,7 +60,7 @@ var handleRequest = function (request, response) {
     } else if (request.url === '/classes/messages') {
       handleGetMessages((JSON.stringify(messages));
     } else if(request.url === '/'){
-      handleStaticFileRequest('./index.html');
+      handleStaticFileRequest('/index.html');
     } else {
       response.statusCode = 404;
       response.end();
